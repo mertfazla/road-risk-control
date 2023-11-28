@@ -5,13 +5,11 @@ import { useRef } from "react";
 
 const MarkerImages = ({ map }) => {
 	const [data, setData] = useState()
-	console.log(data)
 	const [loading, setLoading] = useState(true)
 	const rootRef = useRef()
 
 	const handleMarkerClick = (id) => {
-		console.log("Marker clicked", id)
-		console.log(map.center.lat())
+		console.log(`Marker ID:${id} Location:${map.center.lat()} ${map.center.lng()}`);
 	}
 
 	function handleClusterer() {
@@ -42,10 +40,9 @@ const MarkerImages = ({ map }) => {
 	}
 
 	const handleFetch = async () => {
-		console.log("Locations are fetching...");
-		const res = await fetch("http://localhost:8080/api/detects")
+		console.log("Locations are fetching for adress...");
+		const res = await fetch("http://localhost:8080/api/marker")
 		const data = await res.json()
-		console.log(data)
 		setData(data)
 		setLoading(false)
 	}
