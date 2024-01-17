@@ -10,7 +10,7 @@ function App() {
     <>
       {/* <Navbar /> */}
       <ViewMap />
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
