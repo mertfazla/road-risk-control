@@ -35,7 +35,14 @@ app.use(express.json());
 app.use(cors());
 
 app.get("/api/detects", async (req, res) => {
-    const detectedFrames = await prisma.Detected_Frames.findMany({ orderBy: [{ timestamp: 'desc' }] })
+    const {page} = req.query;
+    const perPage = 5;
+    const skip = (page - 1) * perPage;
+    const detectedFrames = await prisma.Detected_Frames.findMany({ 
+        orderBy: [{ timestamp: 'desc' }] ,
+        take: perPage,
+        skip: skip
+    })
     for (const detectedFrame of detectedFrames){
         const getObjectParams = {
             Bucket: s3Bucket,
@@ -46,7 +53,13 @@ app.get("/api/detects", async (req, res) => {
         detectedFrame.image_url = url;
     }
     res.send(detectedFrames);
+});
 
+app.get("/api/marker", async (req, res) => {
+    const detectedMarkers = await prisma.Detected_Frames.findMany({ 
+        orderBy: [{ timestamp: 'desc' }] ,
+    })
+    res.send(detectedMarkers);
 });
 
 app.post("/api/detects", upload.single('image'), async (req, res) => {
